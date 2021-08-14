@@ -15,3 +15,13 @@ poetryの機能を使って仮想環境に入る
 ```
 poetry shell
 ```
+
+## マイグレーション
+```
+python manage.py migrate
+```
+
+## サーバ起動
+```
+python manage.py runserver
+```
