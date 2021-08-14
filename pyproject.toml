@@ -9,7 +9,20 @@ python = "^3.7"
 Django = "^3.2.6"
 
 [tool.poetry.dev-dependencies]
+black = "^21.7b0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+# blackに関する設定
+line-length = 89
+target-version = ['py36', 'py37', 'py38']
+include = '\.pyi?$'
+exclude = '''
+/(
+  | \.venv
+  | \.git
+)/
+'''
