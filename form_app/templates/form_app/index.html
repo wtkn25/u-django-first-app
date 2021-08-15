@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <form method="{% url " form_app:create-question" %}" action="">
+    <form method="POST" action="">
         {% csrf_token %}
         {{question_form.as_p}}
         {{choice_forms.as_p}}

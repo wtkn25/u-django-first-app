@@ -42,7 +42,9 @@ INSTALLED_APPS = [
     "form_app",
 ]
 
+# middlewareはリクエストを受けたとき上から実行されて、レスポンスを返すときに下から実行される
 MIDDLEWARE = [
+    "config.middleware.PerformanceMiddleware",  # 実行順を考慮してここにパフォーマンス計測を配置する
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -50,6 +52,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "config.middleware.MyMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -163,6 +166,17 @@ LOGGING = {
             "encoding": "utf-8",
             "delay": True,
         },
+        "timed_performance_handler": {
+            "level": "INFO",
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "filename": os.path.join("logs", "application_performance.log"),
+            "when": "S",
+            "interval": 10,
+            "backupCount": 10,
+            "formatter": "simple",
+            "encoding": "utf-8",
+            "delay": True,
+        },
     },
     "loggers": {
         "application-logger": {
@@ -178,6 +192,13 @@ LOGGING = {
                 "timed_error_handler",
             ],
             "level": "ERROR",
+            "propagete": False,
+        },
+        "performance-logger": {
+            "handlers": [
+                "timed_performance_handler",
+            ],
+            "level": "INFO",
             "propagete": False,
         },
     },

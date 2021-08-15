@@ -26,5 +26,5 @@ def error_func(request):
     from django.http import Http404
 
     if "aaa" != "bbb":
-        error_logger.error("aaaとbbbは一致しません")
+        # error_logger.error("aaaとbbbは一致しません")  # middlewareで設定
         raise Http404("このページは存在しません")
