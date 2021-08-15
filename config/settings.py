@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -125,3 +126,63 @@ STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "simple": {
+            "format": "%(asctime)s %(levelname)s [%(pathname)s:%(lineno)s] %(message)s",
+        }
+    },
+    "handlers": {
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "simple",
+        },
+        "timed_file_handler": {
+            "level": "INFO",
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "filename": os.path.join("logs", "application.log"),
+            "when": "S",
+            "interval": 10,
+            "backupCount": 10,
+            "formatter": "simple",
+            "encoding": "utf-8",
+            "delay": True,
+        },
+        "timed_error_handler": {
+            "level": "ERROR",
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "filename": os.path.join("logs", "application_error.log"),
+            "when": "S",
+            "interval": 10,
+            "backupCount": 10,
+            "formatter": "simple",
+            "encoding": "utf-8",
+            "delay": True,
+        },
+    },
+    "loggers": {
+        "application-logger": {
+            "handlers": [
+                "console",
+                "timed_file_handler",
+            ],
+            "level": "DEBUG",  # handlerで設定したレベルより下のレベルを指定しても出力できない
+            "propagate": False,
+        },
+        "error-logger": {
+            "handlers": [
+                "timed_error_handler",
+            ],
+            "level": "ERROR",
+            "propagete": False,
+        },
+    },
+}
+# # viewなどで使える
+# import logging
+# application_logger = logging.getLogger("application-logger")
+# application_logger.debug("メッセージ")

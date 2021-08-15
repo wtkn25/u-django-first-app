@@ -10,4 +10,5 @@ urlpatterns = [
     path("number_page/<int:number>", views.number_page, name="number_page"),
     # こんなこともできる↓
     # path("number_page/<str:user_name>/<int:number>", views.number_page, name="number_page"),
+    path("error/", views.error_func, name="error"),
 ]
